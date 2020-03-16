@@ -15,7 +15,8 @@ public class DrawLine : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         renderer = GetComponent<LineRenderer>(); // get the component from unity
-        renderer.positionCount = 2; // set amount of positions
+        renderer.positionCount = 5; // set amount of positions
+        renderer.SetPosition(0, new Vector3(-8, 4, 0f));
     }
 
     // Update is called once per frame
@@ -25,8 +26,8 @@ public class DrawLine : MonoBehaviour {
         }
         if (Input.GetMouseButton(0)) { // when button is released
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            renderer.SetPosition(0, new Vector3(startMousePos.x, startMousePos.y, 0f));
-            renderer.SetPosition(1, new Vector3(mousePos.x, mousePos.y, 0f));
+            renderer.SetPosition(1, new Vector3(startMousePos.x, startMousePos.y, 0f));
+            renderer.SetPosition(2, new Vector3(mousePos.x, mousePos.y, 0f));
             formula.text = GetFormulaFromVector(startMousePos, mousePos);
         }
     }

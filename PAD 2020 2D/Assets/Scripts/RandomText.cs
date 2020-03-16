@@ -7,7 +7,10 @@ public class RandomText : MonoBehaviour {
 
     public Text formula;
     public Vector3 beginPunt;
+    public Vector3 tussenPunt;
     public Vector3 eindPunt;
+    public Vector3 doel;
+
 
     // private ints for calculation
     private int randomCoefficient;
@@ -27,7 +30,9 @@ public class RandomText : MonoBehaviour {
     void Update() {
         // draw line from data
         // vul lengte in voor x
-        renderer.SetPosition(0, beginPunt);
-        renderer.SetPosition(1, eindPunt);
+        renderer.SetPosition(1, beginPunt);
+        renderer.SetPosition(2, tussenPunt);
+        renderer.SetPosition(3, eindPunt);
+        renderer.SetPosition(4, doel);
     }
 }
