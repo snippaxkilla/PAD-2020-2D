@@ -15,12 +15,20 @@ public class DrawLine : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         renderer = GetComponent<LineRenderer>(); // get the component from unity
-        renderer.positionCount = 5; // set amount of positions
-        renderer.SetPosition(0, Objectives.objectives[0].position);
-        renderer.SetPosition(1, new Vector3(-8, 4, 0));
-        renderer.SetPosition(2, new Vector3(0f, 0f, 0f));
-        renderer.SetPosition(3, new Vector3(0f, 0f, 0f));
-        renderer.SetPosition(4, new Vector3(0f, 0f, 0f));
+        renderer.positionCount = 2; // set amount of positions
+        if (gameObject.name.Equals("LineDrawer")) {
+            renderer.SetPosition(0, Objectives.objectives[0].position);
+            renderer.SetPosition(1, new Vector3(Objectives.objectives[0].position.x + 1, Objectives.objectives[0].position.y - 1, 0f));
+        } else if (gameObject.name.Equals("Waypoints1T2")) {
+            renderer.SetPosition(0, Waypoints.pipes[0].position);
+            renderer.SetPosition(1, new Vector3(Waypoints.pipes[0].position.x + 1, Waypoints.pipes[0].position.y - 1, 0f));
+        } else if (gameObject.name.Equals("Waypoints2T3")) {
+            renderer.SetPosition(0, Waypoints.pipes[1].position);
+            renderer.SetPosition(1, new Vector3(Waypoints.pipes[1].position.x + 1, Waypoints.pipes[1].position.y - 1, 0f));
+        } else if (gameObject.name.Equals("GoalLine")) {
+            renderer.SetPosition(0, Waypoints.pipes[2].position);
+            renderer.SetPosition(1, new Vector3(Waypoints.pipes[2].position.x + 1, Waypoints.pipes[2].position.y - 1, 0f));
+        }
     }
 
     // Update is called once per frame
@@ -48,9 +56,11 @@ public class DrawLine : MonoBehaviour {
             float startPoint = 0f;
             float ax = coefficient * mousePos.x;
             startPoint = mousePos.y - ax;
-            string mathOperator = (startPoint > 0 ? " +" : "");
+            string mathOperator = (startPoint > 0 ? " + " : " - ");
             float roundedStart = Mathf.Ceil(startPoint);
-            formule = roundedStart != 0 ? coefficient.ToString("F1") + "x" + mathOperator + Mathf.Ceil(startPoint) : coefficient.ToString("F1") + "x";
+            string start = Mathf.Ceil(startPoint).ToString();
+            start = start.Substring(1).Trim();
+            formule = roundedStart != 0 ? coefficient.ToString("F1") + "x" + mathOperator + start : coefficient.ToString("F1") + "x";
         } else {
             formule = "Geen formule";
         }
