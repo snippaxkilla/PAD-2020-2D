@@ -28,11 +28,11 @@ public class GameState : MonoBehaviour {
     void Start() {
         lines = GameObject.Find("LineDrawer");
         lineCollider = lines.GetComponent<Collider2D>();
-        firstPos = renderer.GetPosition(0);
-        beginPunt = renderer.GetPosition(1);
-        tussenPunt = renderer.GetPosition(2);
-        eindPunt = renderer.GetPosition(3);
-        doel = renderer.GetPosition(4);
+        firstPos = lines.GetComponent<LineRenderer>().GetPosition(0);
+        beginPunt = lines.GetComponent<LineRenderer>().GetPosition(1);
+        tussenPunt = GameObject.Find("Waypoints1T2").GetComponent<LineRenderer>().GetPosition(1);
+        eindPunt = GameObject.Find("Waypoints2T3").GetComponent<LineRenderer>().GetPosition(1);
+        doel = GameObject.Find("GoalLine").GetComponent<LineRenderer>().GetPosition(1);
     }
 
     // Update is called once per frame
@@ -44,11 +44,6 @@ public class GameState : MonoBehaviour {
                 // repremand player for touching hazard
             }
         }
-        firstPos = renderer.GetPosition(0);
-        beginPunt = renderer.GetPosition(1);
-        tussenPunt = renderer.GetPosition(2);
-        eindPunt = renderer.GetPosition(3);
-        doel = renderer.GetPosition(4);
         bool hitsFirstPos = DetectHit(firstPos, Objectives.objectives[0].position, Margin);
         bool hitsSecondPos = DetectHit(beginPunt, Waypoints.pipes[0].position, Margin);
         bool hitsThirdPos = DetectHit(tussenPunt, Waypoints.pipes[1].position, Margin);
