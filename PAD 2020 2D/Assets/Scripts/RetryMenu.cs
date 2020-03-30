@@ -7,7 +7,7 @@ public class RetryMenu : MonoBehaviour
 {
     public void Retry()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene("Level");
     }
        
     public void QuitGame()
