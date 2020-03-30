@@ -37,6 +37,12 @@ public class GameState : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        lineCollider = lines.GetComponent<Collider2D>();
+        firstPos = lines.GetComponent<LineRenderer>().GetPosition(0);
+        beginPunt = lines.GetComponent<LineRenderer>().GetPosition(1);
+        tussenPunt = GameObject.Find("Waypoints1T2").GetComponent<LineRenderer>().GetPosition(1);
+        eindPunt = GameObject.Find("Waypoints2T3").GetComponent<LineRenderer>().GetPosition(1);
+        doel = GameObject.Find("GoalLine").GetComponent<LineRenderer>().GetPosition(1);
         foreach (Transform t in Hazards.hazards) {
             Collider2D hazardCollider = t.GetComponent<Collider2D>();
             if (lineCollider.bounds.Intersects(hazardCollider.bounds)) {
@@ -50,7 +56,7 @@ public class GameState : MonoBehaviour {
         bool hitsFourthPos = DetectHit(eindPunt, Waypoints.pipes[2].position, Margin);
         bool hitsFinalPos = DetectHit(doel, Objectives.objectives[1].position, Margin);
         if (hitsFirstPos && hitsSecondPos && hitsThirdPos && hitsFourthPos && hitsFinalPos) { // points match, so level completed
-            SceneManager.LoadScene("CompletedLevel");
+            SceneManager.LoadScene("FinishedLevel");
         }
     }
 
