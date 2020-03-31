@@ -10,10 +10,12 @@ public class LineToFormula : MonoBehaviour {
     private LineRenderer activeLine;
 
     public Text formula;
+    private GameObject inputField;
 
     void Awake() {
         activeLine = ActiveLineChecker.activeLine.GetComponent<LineRenderer>();
         formula = GetComponent<Text>();
+        inputField = GameObject.Find("InputField");
     }
 
     // Update is called once per frame
@@ -22,5 +24,7 @@ public class LineToFormula : MonoBehaviour {
         startPoint = activeLine.GetPosition(0);
         endPoint = activeLine.GetPosition(1);
         formula.text = DrawLine.GetFormulaFromVector(startPoint, endPoint);
+        //inputField.GetComponent<InputField>().text = DrawLine.GetFormulaFromVector(startPoint, endPoint);
+        GameObject.Find("Placeholder").GetComponent<Text>().text = formula.text;
     }
 }

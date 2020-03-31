@@ -31,21 +31,8 @@ public class DrawLine : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update() {
-        if (Input.GetMouseButtonDown(0)) { // when mouse button is pressed
-            startMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-        if (Input.GetMouseButton(0)) { // when button is released
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            /*renderer.SetPosition(1, new Vector3(startMousePos.x, startMousePos.y, 0f));
-            renderer.SetPosition(2, new Vector3(mousePos.x, mousePos.y, 0f));
-            formula.text = GetFormulaFromVector(startMousePos, mousePos);*/
-        }
-    }
-
     public static string GetFormulaFromVector(Vector2 startMousePos, Vector2 mousePos) {
-        string formule = "";
+        string formule;
         // algebra
         // y = ax + b, where a = dy / dx
         if (startMousePos != mousePos) {
@@ -53,13 +40,13 @@ public class DrawLine : MonoBehaviour {
             float dx = mousePos.x - startMousePos.x;
             float coefficient = dy / dx;
             // use mousePos for y & x, multiply coefficient by x and subtract result from y, that way you have b.
-            float startPoint = 0f;
-            float ax = coefficient * mousePos.x;
-            startPoint = mousePos.y - ax;
-            string mathOperator = (startPoint > 0 ? " + " : " - ");
-            float roundedStart = Mathf.Ceil(startPoint);
+            float startPoint;
+            float ax = coefficient * mousePos.x; // coefficient calculation
+            startPoint = mousePos.y - ax; // calculation of b (b = y - ax)
+            string mathOperator = (startPoint > 0 ? " + " : " - "); // get the math operator for the equation depending on the value of startpoint (b)
+            float roundedStart = Mathf.Ceil(startPoint); // get rid of redundant '-' when b is negative
             string start = Mathf.Ceil(startPoint).ToString();
-            start = start.Substring(1).Trim();
+            if (roundedStart <= 0) start = start.Substring(1).Trim(); // remove the redundant minus
             formule = roundedStart != 0 ? coefficient.ToString("F1") + "x" + mathOperator + start : coefficient.ToString("F1") + "x";
         } else {
             formule = "Geen formule";
