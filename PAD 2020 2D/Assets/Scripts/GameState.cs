@@ -16,13 +16,9 @@ public class GameState : MonoBehaviour {
     // constants
     private const double Margin = 0.4;
 
-    // given linerenderer (given in unity)
-    public LineRenderer renderer;
-
     // gameobjects to check if there is collision with a hazard
     GameObject lines;
     Collider2D lineCollider;
-
 
     // Start is called before the first frame update
     void Start() {
@@ -45,9 +41,9 @@ public class GameState : MonoBehaviour {
         doel = GameObject.Find("GoalLine").GetComponent<LineRenderer>().GetPosition(1);
         foreach (Transform t in Hazards.hazards) {
             Collider2D hazardCollider = t.GetComponent<Collider2D>();
-            if (lineCollider.bounds.Intersects(hazardCollider.bounds)) {
+            if (lineCollider.bounds.Intersects(hazardCollider.bounds) && DetectHit(doel, Objectives.objectives[1].position, Margin)) { // hit hazard when line fully deployed, so level failed
                 Debug.Log("hazard!");
-                // repremand player for touching hazard
+                SceneManager.LoadScene("FinishedLevel");
             }
         }
         bool hitsFirstPos = DetectHit(firstPos, Objectives.objectives[0].position, Margin);
@@ -68,9 +64,5 @@ public class GameState : MonoBehaviour {
             hit = true;
         }
         return hit;
-    }
-
-    private bool DetectHit(Vector2 firstLoc, Vector2 secondLoc, double margin) {
-        return DetectHit(new Vector3(firstLoc.x, firstLoc.y, 0f), new Vector3(secondLoc.x, secondLoc.y, 0f), margin);
     }
 }

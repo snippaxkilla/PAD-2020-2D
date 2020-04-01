@@ -5,16 +5,9 @@ using UnityEngine.UI;
 
 public class DrawLine : MonoBehaviour {
 
-    private LineRenderer renderer;
-    private Vector2 mousePos;
-    private Vector2 startMousePos;
-
-    [SerializeField]
-    private Text formula;
-
     // Start is called before the first frame update
     void Start() {
-        renderer = GetComponent<LineRenderer>(); // get the component from unity
+        LineRenderer renderer = GetComponent<LineRenderer>(); // get the component from unity
         renderer.positionCount = 2; // set amount of positions
         if (gameObject.name.Equals("LineDrawer")) {
             renderer.SetPosition(0, Objectives.objectives[0].position);
@@ -31,18 +24,18 @@ public class DrawLine : MonoBehaviour {
         }
     }
 
-    public static string GetFormulaFromVector(Vector2 startMousePos, Vector2 mousePos) {
+    public static string GetFormulaFromVector(Vector2 startPos, Vector2 endPos) {
         string formule;
         // algebra
         // y = ax + b, where a = dy / dx
-        if (startMousePos != mousePos) {
-            float dy = mousePos.y - startMousePos.y;
-            float dx = mousePos.x - startMousePos.x;
+        if (startPos != endPos) {
+            float dy = endPos.y - startPos.y;
+            float dx = endPos.x - startPos.x;
             float coefficient = dy / dx;
             // use mousePos for y & x, multiply coefficient by x and subtract result from y, that way you have b.
             float startPoint;
-            float ax = coefficient * mousePos.x; // coefficient calculation
-            startPoint = mousePos.y - ax; // calculation of b (b = y - ax)
+            float ax = coefficient * endPos.x; // coefficient calculation
+            startPoint = endPos.y - ax; // calculation of b (b = y - ax)
             string mathOperator = (startPoint > 0 ? " + " : " - "); // get the math operator for the equation depending on the value of startpoint (b)
             float roundedStart = Mathf.Ceil(startPoint); // get rid of redundant '-' when b is negative
             string start = Mathf.Ceil(startPoint).ToString();
