@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class DrawLine : MonoBehaviour {
 
-    // Start is called before the first frame update
-    void Start() {
+    void Awake() {
         LineRenderer renderer = GetComponent<LineRenderer>(); // get the component from unity
         renderer.positionCount = 2; // set amount of positions
         if (gameObject.name.Equals("LineDrawer")) {

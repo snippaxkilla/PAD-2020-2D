@@ -1,18 +1,10 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:PAD 2020 2D/Assets/Scripts/ActiveLineChecker.cs.meta
 guid: 1d80cc60e66adf4468549c63717b1859
-=======
-guid: 1e9732521002e3d44b47d6a681b9910d
->>>>>>> origin/Scene-Switch:PAD 2020 2D/Assets/Scripts/RetryMenu.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences: []
-<<<<<<< HEAD:PAD 2020 2D/Assets/Scripts/ActiveLineChecker.cs.meta
-  executionOrder: 700
-=======
-  executionOrder: 0
->>>>>>> origin/Scene-Switch:PAD 2020 2D/Assets/Scripts/RetryMenu.cs.meta
+  executionOrder: 890
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

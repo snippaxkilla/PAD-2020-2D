@@ -11,6 +11,7 @@ public class ActiveLineChecker : MonoBehaviour {
 
     public static Transform[] lines;
     public static GameObject activeLine;
+    private Dictionary<GameObject, KeyValuePair<float, float>> inputPoints;
 
     void Awake() {
         lines = new Transform[transform.childCount];
@@ -18,6 +19,9 @@ public class ActiveLineChecker : MonoBehaviour {
             lines[i] = transform.GetChild(i);
         }
         activeLine = lines[0].gameObject;
+        inputPoints = BuildDictionary();
+        GameObject.Find("X").GetComponent<InputField>().text = "-7.1";
+        GameObject.Find("Y").GetComponent<InputField>().text = "3.1";
     }
 
     void Update() {
@@ -66,7 +70,17 @@ public class ActiveLineChecker : MonoBehaviour {
         }*/
     }
 
+    private static Dictionary<GameObject, KeyValuePair<float, float>> BuildDictionary() {
+        Dictionary<GameObject, KeyValuePair<float, float>> returnItem = new Dictionary<GameObject, KeyValuePair<float, float>>();
+        for (int i = 0; i < lines.Length; i++) {
+            LineRenderer render = lines[i].gameObject.GetComponent<LineRenderer>();
+            returnItem.Add(lines[i].gameObject, new KeyValuePair<float, float>(render.GetPosition(1).x, render.GetPosition(1).y));
+        }
+        return returnItem;
+    }
+
     void nextLine() { // method that handles going to next line
+        GameObject oldLine = activeLine.gameObject;
         if (activeLine == lines[0].gameObject) {
             if (lines[1] != null) activeLine = lines[1].gameObject;
         } else if (activeLine == lines[1].gameObject) {
@@ -74,10 +88,11 @@ public class ActiveLineChecker : MonoBehaviour {
         } else if (activeLine == lines[2].gameObject) {
             if (lines[3] != null) activeLine = lines[3].gameObject;
         }
-        clearFields();
+        clearFields(oldLine, activeLine.gameObject);
     }
 
     void previousLine() { // method that handles going back to previous line
+        GameObject oldLine = activeLine.gameObject;
         if (activeLine == lines[1].gameObject) {
             if (lines[0] != null) activeLine = lines[0].gameObject;
         } else if (activeLine == lines[2].gameObject) {
@@ -85,12 +100,34 @@ public class ActiveLineChecker : MonoBehaviour {
         } else if (activeLine == lines[3].gameObject) {
             if (lines[2] != null) activeLine = lines[2].gameObject;
         }
-        clearFields();
+        clearFields(oldLine, activeLine.gameObject);
     }
 
-    private void clearFields() {
-        GameObject.Find("xText").GetComponent<Text>().text = "";
-        GameObject.Find("yText").GetComponent<Text>().text = "";
+    private void clearFields(GameObject oldLine, GameObject newLine) {
+        string inputX = GameObject.Find("xText").GetComponent<Text>().text;
+        string inputY = GameObject.Find("yText").GetComponent<Text>().text;
+        float x = 0;
+        float y = 0;
+        if (!String.IsNullOrEmpty(inputX) && CanParse(inputX)) {
+            x = ParseNumber(inputX);
+        }
+        if (!String.IsNullOrEmpty(inputY) && CanParse(inputY)) {
+            y = ParseNumber(inputY);
+        }
+        if (inputPoints.ContainsKey(oldLine)) {
+            inputPoints[oldLine] = new KeyValuePair<float, float>(x, y);
+        }
+        float newX = 0;
+        float newY = 0;
+        if (inputPoints.ContainsKey(newLine)) {
+            KeyValuePair<float, float> value = new KeyValuePair<float, float>();
+            if (inputPoints.TryGetValue(newLine, out value)) {
+                newX = value.Key;
+                newY = value.Value;
+            }
+        }
+        GameObject.Find("X").GetComponent<InputField>().text = newX.ToString();
+        GameObject.Find("Y").GetComponent<InputField>().text = newY.ToString();
     }
 
     /*public bool CanParseFormula(string formula) { // see if formula contains only digits, an x or a math operator
@@ -116,6 +153,7 @@ public class ActiveLineChecker : MonoBehaviour {
             char[] numbers = number.ToCharArray();
             if (numbers[0] < '0' || numbers[0] > '9') return false;
         }
+        if (number.IndexOf("-") > 0) return false;
         return true;
     }
 
