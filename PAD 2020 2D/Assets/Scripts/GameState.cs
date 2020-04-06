@@ -33,6 +33,9 @@ public class GameState : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (!SceneManager.GetActiveScene().name.Equals("Level") || Waypoints.pipes == null) {
+            return;
+        }
         lineCollider = lines.GetComponent<Collider2D>();
         firstPos = lines.GetComponent<LineRenderer>().GetPosition(0);
         beginPunt = lines.GetComponent<LineRenderer>().GetPosition(1);
