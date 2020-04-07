@@ -46,13 +46,9 @@ public class ActiveLineChecker : MonoBehaviour {
         if (newFormula != "") {
             if (CanParseFormula(newFormula)) {
                 string[] calculation = ParseFormula(newFormula);
-                //KeyValuePair<float, float> points = GetPoints(calculation);
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < calculation.Length; i++) {
-                    sb.Append(calculation[i]).Append(" ");
-                }
-                //Debug.Log(sb.ToString().Trim() + " " + boundary + ", " + points.Key + " " + points.Value);
-               // activeLine.GetComponent<LineRenderer>().SetPosition(1, new Vector2(points.Key, points.Value));
+                KeyValuePair<float, float> points = GetPoints(calculation);
+                Debug.Log(points.Key + " " + points.Value);
+                activeLine.GetComponent<LineRenderer>().SetPosition(1, new Vector2(points.Key, points.Value));
             } else {
                 Debug.Log("Invalid formula!");
             }
@@ -211,7 +207,7 @@ public class ActiveLineChecker : MonoBehaviour {
         return content;
     }
 
-    static KeyValuePair<float, float> GetPoints(string[] formula, Vector2 boundary) { // return in system: (x, y)
+    static KeyValuePair<float, float> GetPoints(string[] formula) { // return in system: (x, y)
         KeyValuePair<float, float> points;
         if (formula[0].Contains("x")) {
             formula[0] = formula[0].Replace("x", "");
@@ -220,30 +216,23 @@ public class ActiveLineChecker : MonoBehaviour {
         float a = ParseNumber(formula[0]);
         string mathOperator = "";
         float b = 0;
-        if (formula.Length > 2) { 
+        if (formula.Length > 2) {
             mathOperator = formula[1];
-            
-        } 
+
+        }
         if (formula.Length > 3) {
             b = ParseNumber(formula[2]);
         }
-        float beginX = activeLine.GetComponent<LineRenderer>().GetPosition(0).x;
-        float endX = activeLine.GetComponent<LineRenderer>().GetPosition(1).x;
-        float differenceX = endX - beginX;
-        if (endX > boundary.x) {
-            endX = boundary.x;
-        }
-        float ax = a * differenceX;
+
+        float x = GameObject.Find("Goal").GetComponent<SpriteRenderer>().bounds.max.x + 10;
+        float ax = a * x;
         float y;
         if (mathOperator != "" && b != 0) {
             y = mathOperator == "-" ? ax - b : ax + b;
         } else {
             y = ax;
         }
-        if (y < boundary.y) {
-            y = boundary.y;
-        }
-        points = new KeyValuePair<float, float>(endX, y);
+        points = new KeyValuePair<float, float>(x, y);
         return points;
     }
 
